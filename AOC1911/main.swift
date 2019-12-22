@@ -183,7 +183,6 @@ struct Program {
                         input = visitedPoints[actualPoint] ?? 0
                         firstOutput = true
                     }
-                    print(parameter1)
                 case .JumpIfTrue:
                     let parameter1 = getNextParameter(parameterMode: parameterModes.getNext())
                     if parameter1 != 0 {
@@ -256,8 +255,23 @@ print(program.visitedPoints.count)
 
 // ----------------------------------
 
+print()
+
 program = Program(memory: memoryString, input: 1)
 
 program.run()
 
+let minX = program.visitedPoints.min(by: {$0.key.x < $1.key.x })!.key.x
+let maxX = program.visitedPoints.min(by: {$0.key.x > $1.key.x })!.key.x
+let minY = program.visitedPoints.min(by: {$0.key.y < $1.key.y })!.key.y
+let maxY = program.visitedPoints.min(by: {$0.key.y > $1.key.y })!.key.y
 
+for y in (minY...maxY).reversed() {
+    for x in minX...maxX {
+        let color = program.visitedPoints[Point(x: x, y: y)] ?? 0
+        print(color == 0 ? " " : "O", terminator: "")
+    }
+    print()
+}
+
+print()
